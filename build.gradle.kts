@@ -2,7 +2,7 @@ plugins {
     kotlin("jvm") version "1.8.21"
 }
 
-group = "org.example"
+group = "mpbostock"
 version = "1.0-SNAPSHOT"
 
 repositories {

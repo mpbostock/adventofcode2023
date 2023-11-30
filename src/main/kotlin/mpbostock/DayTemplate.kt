@@ -1,4 +1,4 @@
-package org.example
+package mpbostock
 
 object DayTemplate {
     fun partOne(input: List<String>) {

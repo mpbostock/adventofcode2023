@@ -1,2 +1,2 @@
-rootProject.name = "aoctemplate"
+rootProject.name = "adventofcode2023"
 

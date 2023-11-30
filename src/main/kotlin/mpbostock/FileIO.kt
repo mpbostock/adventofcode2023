@@ -1,4 +1,4 @@
-package org.example
+package mpbostock
 
 object FileIO {
     fun <T> readInput(filename: String, lineMapper: (String) -> T): List<T> {
