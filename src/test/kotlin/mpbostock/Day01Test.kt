@@ -87,7 +87,7 @@ internal class Day01Test {
         for (i in integers.indices) {
             assertEquals(
                 integers[i],
-                calibrationValues(partTwoTestData[i]) { convertWordsToDigits(it) },
+                calibrationValues(partTwoTestData[i], ::convertWordsToDigits),
                 "The combined integer did not equal ${integers[i]}"
             )
         }

@@ -6,7 +6,7 @@ object Day01 {
     }
 
     fun partTwo(input: List<String>): Int {
-        return input.sumOf { calibrationValues(it) { convertWordsToDigits(it) } }
+        return input.sumOf { calibrationValues(it, ::convertWordsToDigits) }
     }
 
     @JvmStatic
