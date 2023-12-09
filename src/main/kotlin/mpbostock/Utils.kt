@@ -6,3 +6,16 @@ fun String.toListOfInts(delimiter: Char = ' '): List<Int> = this.trim().split(de
 fun String.toListOfLongs(delimiter: Char = ' '): List<Long> = this.trim().split(delimiter).map { it.toLong() }
 fun String.squashSpaces(): String = this.replace("""\s+""".toRegex(), " ")
 fun String.squashAndTrim(): String = this.squashSpaces().trim()
+fun <T> Sequence<T>.indefinitely(): Sequence<T> = generateSequence(this) { this  }.flatten()
+fun lowestCommonMultiple(a: Long, b: Long): Long {
+    val larger = if (a > b) a else b
+    val maxLcm = a * b
+    var lcm = larger
+    while (lcm <= maxLcm) {
+        if (lcm % a == 0L && lcm % b == 0L) {
+            return lcm
+        }
+        lcm += larger
+    }
+    return maxLcm
+}
