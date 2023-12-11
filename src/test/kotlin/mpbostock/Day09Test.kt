@@ -1,5 +1,6 @@
 package mpbostock
 
+import mpbostock.Day09.ValueHistory
 import mpbostock.Day09.partOne
 import mpbostock.Day09.partTwo
 import org.junit.jupiter.api.Test
@@ -18,25 +19,25 @@ internal class Day09Test {
     @Test
     fun `value history predicts the correct next value for the test data`() {
         for(i in testData.indices) {
-            assertEquals(expectedNextValue[i], Day09.ValueHistory.fromString(testData[i]).predictNextValue())
+            assertEquals(expectedNextValue[i], ValueHistory.fromString(testData[i]).predictNextValue())
         }
     }
 
     @Test
     fun `value history predicts the correct previous value for the test data`() {
         for(i in testData.indices) {
-            assertEquals(expectedPreviousValue[i], Day09.ValueHistory.fromString(testData[i]).predictPreviousValue())
+            assertEquals(expectedPreviousValue[i], ValueHistory.fromString(testData[i]).predictPreviousValue())
         }
     }
 
     @Test
     fun `part one gives the sum of all the next predicted values for the test data`() {
-        assertEquals(114, partOne(testData.map { Day09.ValueHistory.fromString(it) }))
+        assertEquals(114, partOne(testData.map { ValueHistory.fromString(it) }))
     }
 
     @Test
     fun `part two gives the sum of all the previous predicted values for the test data`() {
-        assertEquals(2, partTwo(testData.map { Day09.ValueHistory.fromString(it) }))
+        assertEquals(2, partTwo(testData.map { ValueHistory.fromString(it) }))
     }
 
 }

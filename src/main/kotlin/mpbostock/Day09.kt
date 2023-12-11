@@ -21,6 +21,7 @@ object Day09 {
     }
 
     data class ValueHistory(private val historicValues: List<Int>) {
+        private val differentials: List<List<Int>> by lazy { differences(historicValues, emptyList()) }
         private tailrec fun differences(values: List<Int>, acc: List<List<Int>>): List<List<Int>> {
             return if ( values.all { it == 0 }) {
                 acc
@@ -31,14 +32,12 @@ object Day09 {
         }
 
         fun predictNextValue(): Int {
-            val differentials = differences(historicValues, emptyList())
             return historicValues.last() + differentials.reversed().fold(0) {acc, diffs ->
                 acc + diffs.last()
             }
         }
 
         fun predictPreviousValue(): Int {
-            val differentials = differences(historicValues, emptyList())
             return historicValues.first() - differentials.reversed().fold(0) {acc, diffs ->
                 diffs.first() - acc
             }
