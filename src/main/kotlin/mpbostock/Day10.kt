@@ -154,11 +154,9 @@ object Day10 {
                 return if (paths.all { it.pos == paths[0].pos }) {
                     acc
                 } else {
-                    val existingPositions = acc.toSet()
                     val newPaths =
-                        paths.map { connectingTiles(it).single { tile -> !existingPositions.contains(tile.pos) } }
-                    val positionsToAdd = newPaths.map { it.pos }.toSet()
-                    walkPaths(newPaths, acc + positionsToAdd)
+                        paths.map { connectingTiles(it).single { tile -> !acc.contains(tile.pos) } }
+                    walkPaths(newPaths, acc + newPaths.map { it.pos }.toSet())
                 }
             }
             return walkPaths(startingPaths, setOf(startPos) + startingPaths.map { it.pos })
