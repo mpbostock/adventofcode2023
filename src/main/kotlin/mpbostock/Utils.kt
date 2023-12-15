@@ -19,3 +19,4 @@ fun lowestCommonMultiple(a: Long, b: Long): Long {
     }
     return maxLcm
 }
+fun Int.isOdd(): Boolean = this % 2 == 1
