@@ -10,6 +10,8 @@ interface Grid<T> {
     val coordinates: Set<Coordinate>
     fun getCell(pos: Coordinate) = if (validPos(pos)) cells[pos.y][pos.x] else defaultCell
     private fun validPos(pos: Coordinate) = pos.x in 0 until width && pos.y in 0 until height
+    fun Coordinate.asPositionedCell() = PositionedCell(this, getCell(this))
+    fun Coordinate.move(mover: PositionMover) = getCell(mover.move(this))
 
     companion object {
         inline fun <reified T> fromInput(input: List<String>, crossinline charMapper: (Char) -> T, defaultCell: T): Grid<T> {
@@ -29,3 +31,7 @@ interface Grid<T> {
 }
 
 data class Coordinate(val x: Int, val y: Int)
+data class PositionedCell<T>(val pos: Coordinate, val cell: T)
+interface PositionMover {
+    fun move(pos: Coordinate): Coordinate
+}

@@ -73,10 +73,6 @@ object Day10 {
         }
     }
 
-    interface PositionMover {
-        fun move(pos: Coordinate): Coordinate
-    }
-
     interface PipeConnections<T> {
         val validConnections: Set<T>
         operator fun contains(tile: T): Boolean = validConnections.contains(tile)
@@ -129,20 +125,18 @@ object Day10 {
 
     class TileGrid(private val grid: Grid<Tile>): Grid<Tile> by grid {
         private val startPos: Coordinate by lazy { coordinates.single { getCell(it) == Tile.StartingPosition } }
-        private val start: PositionedTile by lazy { PositionedTile(startPos, resolveStartTile()) }
+        private val start: PositionedCell<Tile> by lazy { PositionedCell(startPos, resolveStartTile()) }
         val loop: Set<Coordinate> by lazy { calculateLoop() }
         val insideLoop: Set<Coordinate> by lazy { calculateInsideLoop() }
-        private fun Coordinate.move(mover: PositionMover) = getCell(mover.move(this))
-        private fun Coordinate.asPositionedTile() = PositionedTile(this, getCell(this))
-        private fun connectingTiles(current: PositionedTile) =
-            current.tile.validConnections.map {
-                it to it.move(current.pos).asPositionedTile()
-            }.filter { it.second.tile in it.first }.map { it.second }
+        private fun connectingTiles(current: PositionedCell<Tile>) =
+            current.cell.validConnections.map {
+                it to it.move(current.pos).asPositionedCell()
+            }.filter { it.second.cell in it.first }.map { it.second }
 
         private fun calculateLoop(): Set<Coordinate> {
             val startingPaths = connectingTiles(start)
             tailrec fun walkPaths(
-                paths: List<PositionedTile>,
+                paths: List<PositionedCell<Tile>>,
                 acc: Set<Coordinate>
             ): Set<Coordinate> {
                 return if (paths.all { it.pos == paths[0].pos }) {
@@ -168,7 +162,7 @@ object Day10 {
 
         private fun allNSCrossingsEastOf(pos: Coordinate): List<Tile> {
             return loop.map {
-                val tile = if (it == startPos) start.tile else getCell(it)
+                val tile = if (it == startPos) start.cell else getCell(it)
                 PositionedTile(it, tile)
             }.filter {
                 it.pos.y == pos.y && it.pos.x > pos.x && (it.tile in Direction.North || it.tile in Direction.South)
