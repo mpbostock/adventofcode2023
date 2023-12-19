@@ -1,12 +1,12 @@
 package mpbostock
 
 object Day10 {
-    fun partOne(grid: Grid): Int {
+    fun partOne(grid: TileGrid): Int {
         val loopCoords = grid.loop
         return (loopCoords.size + 1) / 2
     }
 
-    fun partTwo(grid: Grid): Int {
+    fun partTwo(grid: TileGrid): Int {
         val insideLoop = grid.insideLoop
         grid.print()
         return insideLoop.count()
@@ -16,7 +16,7 @@ object Day10 {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val grid = Grid.fromInput(input)
+        val grid = TileGrid.fromInput(input)
         val partOneSolution = partOne(grid)
         println(partOneSolution)
 
@@ -125,21 +125,15 @@ object Day10 {
         }
     }
 
-    data class Coordinate(val x: Int, val y: Int)
     data class PositionedTile(val pos: Coordinate, val tile: Tile)
 
-    class Grid(private val tiles: Array<Array<Tile>>) {
-        private val width = tiles[0].size
-        private val height = tiles.size
-        private val coordinates: Set<Coordinate> by lazy { allCoordinates() }
-        private val startPos: Coordinate by lazy { coordinates.single { getTile(it) == Tile.StartingPosition } }
+    class TileGrid(private val grid: Grid<Tile>): Grid<Tile> by grid {
+        private val startPos: Coordinate by lazy { coordinates.single { getCell(it) == Tile.StartingPosition } }
         private val start: PositionedTile by lazy { PositionedTile(startPos, resolveStartTile()) }
         val loop: Set<Coordinate> by lazy { calculateLoop() }
         val insideLoop: Set<Coordinate> by lazy { calculateInsideLoop() }
-        private fun getTile(pos: Coordinate) = if (validPos(pos)) tiles[pos.y][pos.x] else Tile.Ground
-        private fun validPos(pos: Coordinate) = pos.x in 0 until width && pos.y in 0 until height
-        private fun Coordinate.move(mover: PositionMover) = getTile(mover.move(this))
-        private fun Coordinate.asPositionedTile() = PositionedTile(this, getTile(this))
+        private fun Coordinate.move(mover: PositionMover) = getCell(mover.move(this))
+        private fun Coordinate.asPositionedTile() = PositionedTile(this, getCell(this))
         private fun connectingTiles(current: PositionedTile) =
             current.tile.validConnections.map {
                 it to it.move(current.pos).asPositionedTile()
@@ -174,23 +168,18 @@ object Day10 {
 
         private fun allNSCrossingsEastOf(pos: Coordinate): List<Tile> {
             return loop.map {
-                val tile = if (it == startPos) start.tile else getTile(it)
+                val tile = if (it == startPos) start.tile else getCell(it)
                 PositionedTile(it, tile)
             }.filter {
                 it.pos.y == pos.y && it.pos.x > pos.x && (it.tile in Direction.North || it.tile in Direction.South)
             }.map { it.tile }
         }
 
-
-        private fun allCoordinates(): Set<Coordinate> = (0 until height).fold(emptySet()) { acc, y ->
-            acc + (0 until width).map { Coordinate(it, y) }
-        }
-
         fun print() {
             (0 until height).onEach { y ->
                 (0 until width).onEach { x ->
                     val coordinate = Coordinate(x, y)
-                    print(if (coordinate in loop) getTile(coordinate).print else if (coordinate in insideLoop) '*' else '.')
+                    print(if (coordinate in loop) getCell(coordinate).print else if (coordinate in insideLoop) '*' else '.')
                 }
                 println()
             }
@@ -204,8 +193,8 @@ object Day10 {
         )
 
         companion object {
-            fun fromInput(input: List<String>): Grid {
-                return Grid(input.map { it.map(Tile::fromChar).toTypedArray() }.toTypedArray())
+            fun fromInput(input: List<String>): TileGrid {
+                return TileGrid(Grid.fromInput(input, Tile::fromChar, Tile.Ground))
             }
         }
     }

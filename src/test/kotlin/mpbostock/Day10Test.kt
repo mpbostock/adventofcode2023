@@ -1,6 +1,6 @@
 package mpbostock
 
-import mpbostock.Day10.Coordinate
+import mpbostock.Day10.TileGrid
 import mpbostock.Day10.partOne
 import mpbostock.Day10.partTwo
 import org.junit.jupiter.api.Test
@@ -93,28 +93,28 @@ internal class Day10Test {
 
     @Test
     fun `loop coordinates are expected for simple loop`() {
-        val grid = Day10.Grid.fromInput(simpleTestData)
+        val grid = TileGrid.fromInput(simpleTestData)
         assertEquals(expectedSimpleLoopCoordinates, grid.loop)
     }
 
     @Test
     fun `loop coordinates are expected for complex loop`() {
-        val loopCoordinates = Day10.Grid.fromInput(complexTestData).loop
+        val loopCoordinates = TileGrid.fromInput(complexTestData).loop
         assertEquals(expectedComplexLoopCoordinates, loopCoordinates)
     }
 
     @Test
     fun `part one gives furthest step away from start of loop for test data`() {
-        assertEquals(4, partOne(Day10.Grid.fromInput(simpleTestData)))
-        assertEquals(8, partOne(Day10.Grid.fromInput(complexTestData)))
+        assertEquals(4, partOne(TileGrid.fromInput(simpleTestData)))
+        assertEquals(8, partOne(TileGrid.fromInput(complexTestData)))
     }
 
     @Test
     fun `part two gives number of tiles inside loop`() {
-        assertEquals(1, partTwo(Day10.Grid.fromInput(simpleTestData)))
-        assertEquals(1, partTwo(Day10.Grid.fromInput(complexTestData)))
-        assertEquals(4, partTwo(Day10.Grid.fromInput(testForInsideLoop1)))
-        assertEquals(8, partTwo(Day10.Grid.fromInput(testForInsideLoop2)))
-        assertEquals(10, partTwo(Day10.Grid.fromInput(testForInsideLoop3)))
+        assertEquals(1, partTwo(TileGrid.fromInput(simpleTestData)))
+        assertEquals(1, partTwo(TileGrid.fromInput(complexTestData)))
+        assertEquals(4, partTwo(TileGrid.fromInput(testForInsideLoop1)))
+        assertEquals(8, partTwo(TileGrid.fromInput(testForInsideLoop2)))
+        assertEquals(10, partTwo(TileGrid.fromInput(testForInsideLoop3)))
     }
 }
