@@ -1,5 +1,7 @@
 package mpbostock
 
+import kotlin.math.abs
+
 interface Grid<T> {
     val cells: Array<Array<T>>
     val defaultCell: T
@@ -31,6 +33,11 @@ interface Grid<T> {
 }
 
 data class Coordinate(val x: Int, val y: Int)
+data class Line(val start: Coordinate, val end: Coordinate) {
+    fun stepsBetween(): Int {
+        return abs(end.x - start.x) + abs(end.y - start.y)
+    }
+}
 data class PositionedCell<T>(val pos: Coordinate, val cell: T)
 interface PositionMover {
     fun move(pos: Coordinate): Coordinate
