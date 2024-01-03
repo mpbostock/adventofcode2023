@@ -22,7 +22,7 @@ object Day06 {
 
     data class BoatRace(val time: Long, val recordDistance: Long) {
         fun numberOfWaysToWin(): Int {
-            return (0..time).map { speed -> (time - speed) * speed }.count { it > recordDistance }
+            return (1 until time).map { speed -> (time - speed) * speed }.count { it > recordDistance }
         }
     }
     data class BoatRaces(val races: Sequence<BoatRace>) {
