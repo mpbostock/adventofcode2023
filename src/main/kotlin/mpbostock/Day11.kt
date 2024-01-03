@@ -28,15 +28,15 @@ object Day11 {
             input.map { line -> line.indices.filter { line[it] == '.' }.toSet() }.reduce(Set<Int>::intersect)
         }
 
-        private fun expand(coordinate: Coordinate): Coordinate {
-            val deltaX = emptyColumnIndices.count { it <= coordinate.x } * (expansion - 1)
-            val deltaY = emptyRowIndices.count { it <= coordinate.y } * (expansion - 1)
-            return Coordinate(coordinate.x + deltaX, coordinate.y + deltaY)
+        private fun Coordinate.expand(): Coordinate {
+            val deltaX = emptyColumnIndices.count { it <= x } * (expansion - 1)
+            val deltaY = emptyRowIndices.count { it <= y } * (expansion - 1)
+            return Coordinate(x + deltaX, y + deltaY)
         }
 
         val galaxies: List<Coordinate> by lazy {
             input.foldIndexed(emptyList()) {y, galaxies, line ->
-                galaxies + line.indices.filter { line[it] == '#' }.map { x -> expand(Coordinate(x, y)) }
+                galaxies + line.indices.filter { line[it] == '#' }.map { x -> Coordinate(x, y).expand() }
             }
         }
 
